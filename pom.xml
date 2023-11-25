@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Basic elements -->
+  <groupId>ExternalLibraries</groupId> 
+  <artifactId>AddressExtLib</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+<packaging>decision-library</packaging>
+  <name>Address library</name>
+  <description>Representation of an American address.</description>
+    <properties>
+    <revision>1.0.0</revision>
+    <archive.repository.snapshot.url>snapshot_URL</archive.repository.snapshot.url>
+    <archive.repository.release.url>release_URL</archive.repository.release.url>
+    <ads-mojo.version>mojo_version</ads-mojo.version>
+  </properties>
+
+  <!-- Dependencies -->
+  <dependencies>
+    <dependency>
+      <groupId>org.address</groupId>
+      <artifactId>address</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+
+  <!-- Build settings -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.ibm.decision</groupId>
+          <artifactId>build-maven-plugin</artifactId>
+          <version>${ads-mojo.version}</version>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.ibm.decision</groupId>
+        <artifactId>build-maven-plugin</artifactId>
+        <version>${ads-mojo.version}</version>
+        <configuration>
+          <deployments>
+            <deployment>
+              <name>${project.artifactId}</name>
+            </deployment>
+          </deployments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.ibm.decision</groupId>
+        <artifactId>import-maven-plugin</artifactId>
+        <version>${ads-mojo.version}</version>
+        <executions>
+          <execution>
+            <id>generate-external-annotations-BOM-Voc</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <!--this generation may be skipped -->
+              <skip>false</skip>
+              <!--Optional, by default: en_US -->
+              <locales>
+                <locale>en_US</locale>
+                <!--<locale>fr_FR</locale> -->
+              </locales>
+              <!--Optional, by default: true -->
+              <importMethods>true</importMethods>
+              <!--Optional, by default: all classes from dependencies -->
+              <filter>
+                <includes>
+                  <include>org.address.AmericanAddress</include>
+                </includes>
+              </filter>
+              <referenceFolder>reference</referenceFolder>
+            </configuration>
+            <goals>
+              <goal>import</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
